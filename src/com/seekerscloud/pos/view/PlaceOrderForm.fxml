@@ -108,7 +108,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="84.0" layoutY="565.0" text="0.00" textFill="#da0000">
+      <Label fx:id="lblTotal" layoutX="84.0" layoutY="565.0" text="0.00" textFill="#da0000">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

@@ -32,6 +32,7 @@ public class PlaceOrderFormController {
     public TableColumn colQty;
     public TableColumn colTotal;
     public TableColumn colOption;
+    public Label lblTotal;
 
     public void initialize(){
 
@@ -113,9 +114,7 @@ public class PlaceOrderFormController {
         int qty=Integer.parseInt(txtQty.getText());
         double total = unitPrice*qty;
         Button btn = new Button("Delete");
-
         int row = isAlreadyExists(cmbItemCodes.getValue());
-
         if (row==-1){
             CartTm tm = new CartTm(cmbItemCodes.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
             obList.add(tm);
@@ -128,8 +127,19 @@ public class PlaceOrderFormController {
             tblCart.refresh();
         }
 
+        calculateTotal();
+        clearFields();
+        cmbItemCodes.requestFocus();
 
     }
+
+    private void clearFields() {
+        txtDescription.clear();
+        txtUnitPrice.clear();
+        txtQtyOnHand.clear();
+        txtQty.clear();
+    }
+
     private int isAlreadyExists(String code){
         for (int i = 0; i < obList.size(); i++) {
             if (obList.get(i).getCode().equals(code)){
@@ -137,5 +147,14 @@ public class PlaceOrderFormController {
             }
         }
         return -1;
+    }
+
+    private void calculateTotal(){
+        double total=0.00;
+        for (CartTm tm: obList
+             ) {
+            total+=tm.getTotal();
+        }
+        lblTotal.setText(String.valueOf(total));
     }
 }
