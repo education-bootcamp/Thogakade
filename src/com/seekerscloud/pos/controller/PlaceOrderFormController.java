@@ -3,7 +3,10 @@ package com.seekerscloud.pos.controller;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.modal.Item;
+import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +19,17 @@ public class PlaceOrderFormController {
     public TextField txtName;
     public TextField txtAddress;
     public TextField txtSalary;
+    public TextField txtDescription;
+    public TextField txtUnitPrice;
+    public TextField txtQtyOnHand;
+    public TextField txtQty;
+    public TableView tblCart;
+    public TableColumn colCode;
+    public TableColumn colDescription;
+    public TableColumn colUnitPrice;
+    public TableColumn colQty;
+    public TableColumn colTotal;
+    public TableColumn colOption;
 
     public void initialize(){
         setDateAndOrderId();
@@ -30,6 +44,25 @@ public class PlaceOrderFormController {
                     }
         });
 
+        cmbItemCodes.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if(newValue!=null){
+                        setItemDetails();
+                    }
+                });
+
+    }
+
+    private void setItemDetails() {
+        for (Item i:Database.itemTable
+        ) {
+            if (i.getCode().equals(cmbItemCodes.getValue())){
+                txtDescription.setText(i.getDescription());
+                txtUnitPrice.setText(String.valueOf(i.getUnitPrice()));
+                txtQtyOnHand.setText(String.valueOf(i.getQtyOnHand()));
+            }
+        }
     }
 
     private void setCustomerDetails() {
@@ -64,4 +97,6 @@ public class PlaceOrderFormController {
         txtDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
     }
 
+    public void addToCartOnAction(ActionEvent actionEvent) {
+    }
 }

@@ -65,27 +65,27 @@
          </font>
       </Label>
       <ComboBox fx:id="cmbItemCodes" layoutX="22.0" layoutY="238.0" prefWidth="150.0" promptText="Item Code" />
-      <TextField disable="true" editable="false" layoutX="181.0" layoutY="238.0" promptText="Description">
+      <TextField fx:id="txtDescription" disable="true" editable="false" layoutX="181.0" layoutY="238.0" promptText="Description">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField disable="true" editable="false" layoutX="366.0" layoutY="238.0" prefHeight="28.0" prefWidth="131.0" promptText="Unit Price">
+      <TextField fx:id="txtUnitPrice" disable="true" editable="false" layoutX="366.0" layoutY="238.0" prefHeight="28.0" prefWidth="131.0" promptText="Unit Price">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField disable="true" editable="false" layoutX="509.0" layoutY="238.0" prefHeight="28.0" prefWidth="131.0" promptText="QTY On Hand">
+      <TextField fx:id="txtQtyOnHand" disable="true" editable="false" layoutX="509.0" layoutY="238.0" prefHeight="28.0" prefWidth="131.0" promptText="QTY On Hand">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField layoutX="666.0" layoutY="238.0" prefHeight="28.0" prefWidth="174.0" promptText="QTY">
+      <TextField fx:id="txtQty" layoutX="666.0" layoutY="238.0" prefHeight="28.0" prefWidth="174.0" promptText="QTY">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <JFXButton buttonType="RAISED" layoutX="748.0" layoutY="277.0" style="-fx-background-color: #2980b9;" text="Add to Cart" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="748.0" layoutY="277.0" onAction="#addToCartOnAction" style="-fx-background-color: #2980b9;" text="Add to Cart" textFill="WHITE">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -93,14 +93,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <TableView layoutX="21.0" layoutY="326.0" prefHeight="200.0" prefWidth="817.0">
+      <TableView fx:id="tblCart" layoutX="21.0" layoutY="326.0" prefHeight="200.0" prefWidth="817.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Item Code" />
-          <TableColumn prefWidth="172.0" text="Description" />
-            <TableColumn prefWidth="158.0" text="Unit Price" />
-            <TableColumn prefWidth="123.0" text="QTY" />
-            <TableColumn prefWidth="165.0" text="Total" />
-            <TableColumn prefWidth="123.0" text="Option" />
+          <TableColumn fx:id="colCode" prefWidth="75.0" text="Item Code" />
+          <TableColumn fx:id="colDescription" prefWidth="172.0" text="Description" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="158.0" text="Unit Price" />
+            <TableColumn fx:id="colQty" prefWidth="123.0" text="QTY" />
+            <TableColumn fx:id="colTotal" prefWidth="165.0" text="Total" />
+            <TableColumn fx:id="colOption" prefWidth="123.0" text="Option" />
         </columns>
       </TableView>
       <Label layoutX="22.0" layoutY="565.0" text="Total" textFill="#da0000">
