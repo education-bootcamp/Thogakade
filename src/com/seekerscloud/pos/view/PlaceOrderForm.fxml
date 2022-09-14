@@ -33,7 +33,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField disable="true" editable="false" layoutX="666.0" layoutY="68.0" promptText="Order Date">
+      <TextField fx:id="txtDate" disable="true" editable="false" layoutX="666.0" layoutY="68.0" promptText="Order Date">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
