@@ -7,9 +7,14 @@ import com.seekerscloud.pos.view.tm.CustomerTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -25,6 +30,7 @@ public class CustomerFormController {
     public TableColumn colSalary;
     public TableColumn colOption;
     public JFXButton btnSaveCustomer;
+    public AnchorPane customerFormContext;
 
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -102,6 +108,7 @@ public class CustomerFormController {
                     Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
                     searchCustomers();
                     new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+                    clearFields();
                 }
             }
         }
@@ -112,5 +119,16 @@ public class CustomerFormController {
         txtName.clear();
         txtAddress.clear();
         txtSalary.clear();
+    }
+
+    public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
+       Stage stage= (Stage)customerFormContext.getScene().getWindow();
+       stage.setScene(new Scene
+               (FXMLLoader.load(getClass().
+                       getResource("../view/DashboardForm.fxml"))));
+    }
+
+    public void newCustomerOnAction(ActionEvent actionEvent) {
+        btnSaveCustomer.setText("Save Customer");
     }
 }

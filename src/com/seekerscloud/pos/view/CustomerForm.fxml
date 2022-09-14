@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="427.0" prefWidth="694.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.CustomerFormController">
+<AnchorPane fx:id="customerFormContext" prefHeight="427.0" prefWidth="694.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.CustomerFormController">
    <children>
-      <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="14.0" style="-fx-background-color: #34495e;" text="Back to Home" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="14.0" onAction="#backToHomeOnAction" style="-fx-background-color: #34495e;" text="Back to Home" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -24,7 +24,7 @@
          </font>
       </Label>
       <Separator layoutX="147.0" layoutY="43.0" prefHeight="3.0" prefWidth="349.0" />
-      <JFXButton buttonType="RAISED" layoutX="574.0" layoutY="14.0" style="-fx-background-color: #1abc9c;" text="+ New Customer" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="574.0" layoutY="14.0" onAction="#newCustomerOnAction" style="-fx-background-color: #1abc9c;" text="+ New Customer" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
