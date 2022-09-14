@@ -6,9 +6,8 @@ import com.seekerscloud.pos.view.tm.CustomerTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 
@@ -17,8 +16,20 @@ public class CustomerFormController {
     public TextField txtName;
     public TextField txtAddress;
     public TextField txtSalary;
+    public TableView<CustomerTm> tblCustomer;
+    public TableColumn colId;
+    public TableColumn colName;
+    public TableColumn colAddress;
+    public TableColumn colSalary;
+    public TableColumn colOption;
 
     public void initialize(){
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
+
         searchCustomers();
     }
     private void searchCustomers(){
@@ -29,6 +40,7 @@ public class CustomerFormController {
             CustomerTm tm = new CustomerTm(c.getId(),c.getName(),c.getAddress(),c.getSalary(), btn);
             tmList.add(tm);
         }
+        tblCustomer.setItems(tmList);
     }
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
@@ -38,6 +50,7 @@ public class CustomerFormController {
 
         boolean isSaved = Database.customerTable.add(c1);
         if (isSaved){
+            searchCustomers();
             new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
         }else{
             new Alert(Alert.AlertType.WARNING, "Try Again!").show();
