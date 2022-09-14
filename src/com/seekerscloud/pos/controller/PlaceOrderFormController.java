@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 public class PlaceOrderFormController {
     public TextField txtDate;
@@ -130,6 +131,24 @@ public class PlaceOrderFormController {
         calculateTotal();
         clearFields();
         cmbItemCodes.requestFocus();
+
+
+        btn.setOnAction(event -> {
+            Alert alert= new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?", ButtonType.YES,ButtonType.NO);
+            Optional<ButtonType> buttonType = alert.showAndWait();
+
+            if (buttonType.get()==ButtonType.YES){
+                for (CartTm tm: obList
+                     ) {
+                    if (tm.getCode().equals(tm.getCode())){
+                        obList.remove(tm);
+                        calculateTotal();
+                        tblCart.refresh();
+                    }
+                }
+            }
+
+        });
 
     }
 
