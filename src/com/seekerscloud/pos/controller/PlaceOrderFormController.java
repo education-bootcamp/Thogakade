@@ -116,6 +116,7 @@ public class PlaceOrderFormController {
         double total = unitPrice*qty;
         Button btn = new Button("Delete");
         int row = isAlreadyExists(cmbItemCodes.getValue());
+
         if (row==-1){
             CartTm tm = new CartTm(cmbItemCodes.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
             obList.add(tm);
@@ -140,11 +141,10 @@ public class PlaceOrderFormController {
             if (buttonType.get()==ButtonType.YES){
                 for (CartTm tm: obList
                      ) {
-                    if (tm.getCode().equals(tm.getCode())){
                         obList.remove(tm);
                         calculateTotal();
                         tblCart.refresh();
-                    }
+                        return;
                 }
             }
 
