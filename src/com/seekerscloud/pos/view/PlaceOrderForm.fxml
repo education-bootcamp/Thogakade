@@ -43,7 +43,7 @@
             <Font name="System Italic" size="15.0" />
          </font>
       </Label>
-      <ComboBox layoutX="22.0" layoutY="161.0" prefWidth="150.0" promptText="Customer Id" />
+      <ComboBox fx:id="cmbCustomerIds" layoutX="22.0" layoutY="161.0" prefWidth="150.0" promptText="Customer Id" />
       <TextField disable="true" editable="false" layoutX="181.0" layoutY="161.0" promptText="Name">
          <font>
             <Font name="System Bold" size="14.0" />
