@@ -3,9 +3,11 @@ package com.seekerscloud.pos.controller;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTm;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
@@ -20,7 +22,13 @@ public class CustomerFormController {
         searchCustomers();
     }
     private void searchCustomers(){
-        ObservableList<CustomerTm>
+        ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
+        for (Customer c:Database.customerTable
+             ) {
+            Button btn = new Button("Delete");
+            CustomerTm tm = new CustomerTm(c.getId(),c.getName(),c.getAddress(),c.getSalary(), btn);
+            tmList.add(tm);
+        }
     }
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
