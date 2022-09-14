@@ -31,6 +31,9 @@ public class CustomerFormController {
     public TableColumn colOption;
     public JFXButton btnSaveCustomer;
     public AnchorPane customerFormContext;
+    public TextField txtSearch;
+
+    private String searchText="";
 
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -39,13 +42,18 @@ public class CustomerFormController {
         colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
 
-        searchCustomers();
+        searchCustomers(searchText);
         tblCustomer.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (null!=newValue){// newValue!=null
                         setData(newValue);
                     }
+                });
+        txtSearch.textProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    searchText=newValue;
+                    searchCustomers(searchText);
                 });
 
     }
@@ -58,30 +66,31 @@ public class CustomerFormController {
         btnSaveCustomer.setText("Update Customer");
     }
 
-    private void searchCustomers() {
+    private void searchCustomers(String text) {
         ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
         for (Customer c : Database.customerTable
         ) {
-            Button btn = new Button("Delete");
-            CustomerTm tm = new CustomerTm(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
-            tmList.add(tm);
+            if(c.getName().contains(text) || c.getAddress().contains(text)){
+                Button btn = new Button("Delete");
+                CustomerTm tm = new CustomerTm(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
+                tmList.add(tm);
 
-            btn.setOnAction(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                        "are you sure whether do you want to delete this customer?",
-                        ButtonType.YES, ButtonType.NO);
-                Optional<ButtonType> buttonType = alert.showAndWait();
-                if (buttonType.get() == ButtonType.YES) {
-                    boolean isDeleted = Database.customerTable.remove(c);
-                    if (isDeleted) {
-                        searchCustomers();
-                        new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
-                    } else {
-                        new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                btn.setOnAction(event -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                            "are you sure whether do you want to delete this customer?",
+                            ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> buttonType = alert.showAndWait();
+                    if (buttonType.get() == ButtonType.YES) {
+                        boolean isDeleted = Database.customerTable.remove(c);
+                        if (isDeleted) {
+                            searchCustomers(searchText);
+                            new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
+                        } else {
+                            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                        }
                     }
-                }
-            });
-
+                });
+            }
         }
         tblCustomer.setItems(tmList);
     }
@@ -94,7 +103,7 @@ public class CustomerFormController {
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
             boolean isSaved = Database.customerTable.add(c1);
             if (isSaved) {
-                searchCustomers();
+                searchCustomers(searchText);
                 clearFields();
                 new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
             } else {
@@ -106,7 +115,7 @@ public class CustomerFormController {
                     Database.customerTable.get(i).setName(txtName.getText());
                     Database.customerTable.get(i).setAddress(txtAddress.getText());
                     Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
-                    searchCustomers();
+                    searchCustomers(searchText);
                     new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
                     clearFields();
                 }
