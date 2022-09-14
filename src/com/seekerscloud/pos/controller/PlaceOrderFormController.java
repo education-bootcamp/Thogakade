@@ -4,6 +4,7 @@ import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.modal.Item;
 import com.seekerscloud.pos.view.tm.CartTm;
+import com.seekerscloud.pos.view.tm.ItemTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -106,19 +107,35 @@ public class PlaceOrderFormController {
         txtDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
     }
 
+    ObservableList<CartTm> obList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         int qty=Integer.parseInt(txtQty.getText());
         double total = unitPrice*qty;
         Button btn = new Button("Delete");
 
-        CartTm tm = new CartTm(cmbItemCodes.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
-        ObservableList<CartTm> obList = FXCollections.observableArrayList();
-        obList.add(tm);
+        int row = isAlreadyExists(cmbItemCodes.getValue());
 
-        tblCart.setItems(obList);
+        if (row==-1){
+            CartTm tm = new CartTm(cmbItemCodes.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
+            obList.add(tm);
+            tblCart.setItems(obList);
+        }else{
+            int tempQty=obList.get(row).getQty()+qty;
+            double tempTotal = unitPrice* tempQty;
+            obList.get(row).setQty(tempQty);
+            obList.get(row).setTotal(tempTotal);
+            tblCart.refresh();
+        }
 
 
-
+    }
+    private int isAlreadyExists(String code){
+        for (int i = 0; i < obList.size(); i++) {
+            if (obList.get(i).getCode().equals(code)){
+                return i;
+            }
+        }
+        return -1;
     }
 }
