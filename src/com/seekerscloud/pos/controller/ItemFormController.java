@@ -100,5 +100,37 @@ public class ItemFormController {
     }
 
     public void saveItemOnAction(ActionEvent actionEvent) {
+        Item i1 = new Item(txtCode.getText(),
+                txtUnitPrice.getText(), Double.parseDouble(txtUnitPrice.getText()),
+                Integer.parseInt(txtUnitPrice.getText()));
+
+        if (btnSaveItem.getText().equalsIgnoreCase("Save Item")) {
+            boolean isSaved = Database.itemTable.add(i1);
+            if (isSaved) {
+                searchItems(searchText);
+                clearFields();
+                new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+            }
+        } else {
+            for (int i = 0; i < Database.customerTable.size(); i++) {
+                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
+                    Database.customerTable.get(i).setName(txtName.getText());
+                    Database.customerTable.get(i).setAddress(txtAddress.getText());
+                    Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
+                    searchCustomers(searchText);
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+                    clearFields();
+                }
+            }
+        }
+    }
+
+    private void clearFields() {
+        txtCode.clear();
+        txtDescription.clear();
+        txtUnitPrice.clear();
+        txtQtyOnHand.clear();
     }
 }
