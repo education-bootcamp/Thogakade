@@ -3,6 +3,8 @@ package com.seekerscloud.pos.controller;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.modal.Item;
+import com.seekerscloud.pos.modal.ItemDetails;
+import com.seekerscloud.pos.modal.Order;
 import com.seekerscloud.pos.view.tm.CartTm;
 import com.seekerscloud.pos.view.tm.ItemTm;
 import javafx.collections.FXCollections;
@@ -11,7 +13,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -34,6 +38,7 @@ public class PlaceOrderFormController {
     public TableColumn colTotal;
     public TableColumn colOption;
     public Label lblTotal;
+    public TextField txtOrderId;
 
     public void initialize(){
 
@@ -175,5 +180,34 @@ public class PlaceOrderFormController {
             total+=tm.getTotal();
         }
         lblTotal.setText(String.valueOf(total));
+    }
+
+    public void placeOrderOnAction(ActionEvent actionEvent) {
+        if (obList.isEmpty()) return;
+        ArrayList<ItemDetails> details= new ArrayList<>();
+        for (CartTm tm:obList
+             ) {
+            details.add(new ItemDetails(tm.getCode(),
+                    tm.getUnitPrice(), tm.getQty()));
+        }
+        Order order= new Order(
+                txtOrderId.getText(),new Date(),
+                Double.parseDouble(lblTotal.getText()),
+                cmbCustomerIds.getValue(),details
+        );
+        Database.orderTable.add(order);
+        clearAll();
+    }
+
+    private void clearAll() {
+        obList.clear();
+        calculateTotal();
+
+        txtName.clear();
+        txtAddress.clear();
+        txtSalary.clear();
+
+        clearFields();
+        cmbCustomerIds.requestFocus();
     }
 }

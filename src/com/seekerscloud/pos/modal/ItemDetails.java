@@ -2,13 +2,13 @@ package com.seekerscloud.pos.modal;
 
 public class ItemDetails {
     private String code;
-    private String unitPrice;
+    private double unitPrice;
     private int qty;
 
     public ItemDetails() {
     }
 
-    public ItemDetails(String code, String unitPrice, int qty) {
+    public ItemDetails(String code, double unitPrice, int qty) {
         this.code = code;
         this.unitPrice = unitPrice;
         this.qty = qty;
@@ -22,11 +22,11 @@ public class ItemDetails {
         this.code = code;
     }
 
-    public String getUnitPrice() {
+    public double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(String unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 

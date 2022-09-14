@@ -2,6 +2,7 @@ package com.seekerscloud.pos.db;
 
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.modal.Item;
+import com.seekerscloud.pos.modal.Order;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,8 @@ public class Database {
             = new ArrayList<Customer>();
     public static ArrayList<Item> itemTable
             = new ArrayList<Item>();
+    public static ArrayList<Order> orderTable
+            = new ArrayList<>();
 
     static {
         customerTable.add(new Customer("C001","Bandara","Colombo",25000));
