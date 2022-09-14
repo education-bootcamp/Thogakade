@@ -1,5 +1,6 @@
 package com.seekerscloud.pos.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTm;
@@ -23,6 +24,7 @@ public class CustomerFormController {
     public TableColumn colAddress;
     public TableColumn colSalary;
     public TableColumn colOption;
+    public JFXButton btnSaveCustomer;
 
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -32,6 +34,19 @@ public class CustomerFormController {
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
 
         searchCustomers();
+
+        tblCustomer.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+            setData(newValue);
+        });
+
+    }
+    private void setData(CustomerTm tm){
+        txtId.setText(tm.getId());
+        txtName.setText(tm.getName());
+        txtAddress.setText(tm.getAddress());
+        txtSalary.setText(String.valueOf(tm.getSalary()));
     }
 
     private void searchCustomers() {
@@ -67,13 +82,17 @@ public class CustomerFormController {
                 txtName.getText(), txtAddress.getText(),
                 Double.parseDouble(txtSalary.getText()));
 
-        boolean isSaved = Database.customerTable.add(c1);
-        if (isSaved) {
-            searchCustomers();
-            clearFields();
-            new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+        if(btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")){
+            boolean isSaved = Database.customerTable.add(c1);
+            if (isSaved) {
+                searchCustomers();
+                clearFields();
+                new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+            }
+        }else{
+            // update
         }
     }
 
