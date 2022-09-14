@@ -29,27 +29,27 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <TextField layoutX="14.0" layoutY="65.0" prefHeight="29.0" prefWidth="128.0" promptText="Customer Id">
+      <TextField fx:id="txtId" layoutX="14.0" layoutY="65.0" prefHeight="29.0" prefWidth="128.0" promptText="Customer Id">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <TextField layoutX="147.0" layoutY="65.0" prefHeight="29.0" prefWidth="166.0" promptText="Name">
+      <TextField fx:id="txtName" layoutX="147.0" layoutY="65.0" prefHeight="29.0" prefWidth="166.0" promptText="Name">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <TextField layoutX="322.0" layoutY="65.0" promptText="Address">
+      <TextField fx:id="txtAddress" layoutX="322.0" layoutY="65.0" promptText="Address">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <TextField layoutX="507.0" layoutY="65.0" prefHeight="29.0" prefWidth="173.0" promptText="Salary">
+      <TextField fx:id="txtSalary" layoutX="507.0" layoutY="65.0" prefHeight="29.0" prefWidth="173.0" promptText="Salary">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <JFXButton buttonType="RAISED" layoutX="532.0" layoutY="104.0" prefHeight="30.0" prefWidth="148.0" style="-fx-background-color: #2980b9;" text="Save Customer" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="532.0" layoutY="104.0" onAction="#saveCustomerOnAction" prefHeight="30.0" prefWidth="148.0" style="-fx-background-color: #2980b9;" text="Save Customer" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
