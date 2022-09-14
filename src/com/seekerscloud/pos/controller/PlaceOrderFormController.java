@@ -196,7 +196,21 @@ public class PlaceOrderFormController {
                 cmbCustomerIds.getValue(),details
         );
         Database.orderTable.add(order);
+        manageQty();
         clearAll();
+    }
+
+    private void manageQty() {
+        for (CartTm tm:obList
+             ) {
+            for (Item i: Database.itemTable
+                 ) {
+                if (i.getCode().equals(tm.getCode())){
+                    i.setQtyOnHand(i.getQtyOnHand()-tm.getQty());
+                    break;
+                }
+            }
+        }
     }
 
     private void clearAll() {
