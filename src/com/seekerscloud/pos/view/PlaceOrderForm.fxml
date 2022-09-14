@@ -44,17 +44,17 @@
          </font>
       </Label>
       <ComboBox fx:id="cmbCustomerIds" layoutX="22.0" layoutY="161.0" prefWidth="150.0" promptText="Customer Id" />
-      <TextField disable="true" editable="false" layoutX="181.0" layoutY="161.0" promptText="Name">
+      <TextField fx:id="txtName" disable="true" editable="false" layoutX="181.0" layoutY="161.0" promptText="Name">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField disable="true" editable="false" layoutX="366.0" layoutY="161.0" prefHeight="28.0" prefWidth="285.0" promptText="Address">
+      <TextField fx:id="txtAddress" disable="true" editable="false" layoutX="366.0" layoutY="161.0" prefHeight="28.0" prefWidth="285.0" promptText="Address">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField disable="true" editable="false" layoutX="666.0" layoutY="161.0" promptText="Salary">
+      <TextField fx:id="txtSalary" disable="true" editable="false" layoutX="666.0" layoutY="161.0" promptText="Salary">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -64,7 +64,7 @@
             <Font name="System Italic" size="15.0" />
          </font>
       </Label>
-      <ComboBox layoutX="22.0" layoutY="238.0" prefWidth="150.0" promptText="Item Code" />
+      <ComboBox fx:id="cmbItemCodes" layoutX="22.0" layoutY="238.0" prefWidth="150.0" promptText="Item Code" />
       <TextField disable="true" editable="false" layoutX="181.0" layoutY="238.0" promptText="Description">
          <font>
             <Font name="System Bold" size="14.0" />
