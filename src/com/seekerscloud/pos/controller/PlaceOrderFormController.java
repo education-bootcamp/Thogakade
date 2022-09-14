@@ -10,10 +10,15 @@ import com.seekerscloud.pos.view.tm.ItemTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +44,7 @@ public class PlaceOrderFormController {
     public TableColumn colOption;
     public Label lblTotal;
     public TextField txtOrderId;
+    public AnchorPane placeOrderFormContext;
 
     public void initialize(){
 
@@ -52,6 +58,7 @@ public class PlaceOrderFormController {
         setDateAndOrderId();
         loadAllCustomerIds();
         loadAllItemCodes();
+        setOrderId();
 
         cmbCustomerIds.getSelectionModel()
                 .selectedItemProperty()
@@ -69,6 +76,18 @@ public class PlaceOrderFormController {
                     }
                 });
 
+    }
+
+    private void setOrderId() {
+        if (Database.orderTable.isEmpty()){
+            txtOrderId.setText("D-1");
+            return;
+        }
+        String tempOrderId=Database.orderTable.get(Database.orderTable.size()-1).getOrderId();// D-3
+        String[] array = tempOrderId.split("-");//[D,3]
+        int tempNumber=Integer.parseInt(array[1]);
+        int finalizeOrderId=tempNumber+1;
+        txtOrderId.setText("D-"+finalizeOrderId);
     }
 
     private void setItemDetails() {
@@ -221,7 +240,20 @@ public class PlaceOrderFormController {
         txtAddress.clear();
         txtSalary.clear();
 
+        //=======
+        cmbCustomerIds.setValue(null);
+        cmbItemCodes.setValue(null);
+        //========
+
         clearFields();
         cmbCustomerIds.requestFocus();
+        setOrderId();
+    }
+
+    public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage= (Stage) placeOrderFormContext.getScene().getWindow();
+        stage.setScene(new Scene
+                (FXMLLoader.load(getClass().
+                        getResource("../view/DashboardForm.fxml"))));
     }
 }
