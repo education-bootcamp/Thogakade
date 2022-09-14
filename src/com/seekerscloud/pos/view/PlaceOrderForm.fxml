@@ -1,14 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.seekerscloud.pos.controller.PlaceOrderFormController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="636.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.seekerscloud.pos.controller.PlaceOrderFormController">
+   <children>
+      <JFXButton buttonType="RAISED" layoutX="22.0" layoutY="14.0" style="-fx-background-color: #34495e;" text="Back to Home" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <Label layoutX="180.0" layoutY="14.0" text="Place Order Form" textFill="#0d0190">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Separator layoutX="180.0" layoutY="42.0" prefHeight="5.0" prefWidth="602.0" />
+      <TextField disable="true" editable="false" layoutX="22.0" layoutY="68.0" promptText="Order Id">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField disable="true" editable="false" layoutX="666.0" layoutY="68.0" promptText="Order Date">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="22.0" layoutY="133.0" text="Customer Details" textFill="#6b0e0e">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font>
+      </Label>
+      <ComboBox layoutX="22.0" layoutY="161.0" prefWidth="150.0" promptText="Customer Id" />
+      <TextField disable="true" editable="false" layoutX="181.0" layoutY="161.0" promptText="Name">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField disable="true" editable="false" layoutX="366.0" layoutY="161.0" prefHeight="28.0" prefWidth="285.0" promptText="Address">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField disable="true" editable="false" layoutX="666.0" layoutY="161.0" promptText="Salary">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="22.0" layoutY="213.0" text="Item Details" textFill="#6b0e0e">
+         <font>
+            <Font name="System Italic" size="15.0" />
+         </font>
+      </Label>
+      <ComboBox layoutX="22.0" layoutY="238.0" prefWidth="150.0" promptText="Item Code" />
+      <TextField disable="true" editable="false" layoutX="181.0" layoutY="238.0" promptText="Description">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField disable="true" editable="false" layoutX="366.0" layoutY="238.0" prefHeight="28.0" prefWidth="131.0" promptText="Unit Price">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField disable="true" editable="false" layoutX="509.0" layoutY="238.0" prefHeight="28.0" prefWidth="131.0" promptText="QTY On Hand">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="666.0" layoutY="238.0" prefHeight="28.0" prefWidth="174.0" promptText="QTY">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <JFXButton buttonType="RAISED" layoutX="748.0" layoutY="277.0" style="-fx-background-color: #2980b9;" text="Add to Cart" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <TableView layoutX="21.0" layoutY="326.0" prefHeight="200.0" prefWidth="817.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Item Code" />
+          <TableColumn prefWidth="172.0" text="Description" />
+            <TableColumn prefWidth="158.0" text="Unit Price" />
+            <TableColumn prefWidth="123.0" text="QTY" />
+            <TableColumn prefWidth="165.0" text="Total" />
+            <TableColumn prefWidth="123.0" text="Option" />
+        </columns>
+      </TableView>
+      <Label layoutX="22.0" layoutY="565.0" text="Total" textFill="#da0000">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="84.0" layoutY="565.0" text="0.00" textFill="#da0000">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="747.0" layoutY="580.0" style="-fx-background-color: #16a085;" text="Place Order" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+   </children>
 </AnchorPane>
