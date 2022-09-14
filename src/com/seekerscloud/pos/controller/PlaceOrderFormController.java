@@ -3,11 +3,11 @@ package com.seekerscloud.pos.controller;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.modal.Item;
+import com.seekerscloud.pos.view.tm.CartTm;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +23,7 @@ public class PlaceOrderFormController {
     public TextField txtUnitPrice;
     public TextField txtQtyOnHand;
     public TextField txtQty;
-    public TableView tblCart;
+    public TableView<CartTm> tblCart;
     public TableColumn colCode;
     public TableColumn colDescription;
     public TableColumn colUnitPrice;
@@ -98,5 +98,18 @@ public class PlaceOrderFormController {
     }
 
     public void addToCartOnAction(ActionEvent actionEvent) {
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        int qty=Integer.parseInt(txtQty.getText());
+        double total = unitPrice*qty;
+        Button btn = new Button("Delete");
+
+        CartTm tm = new CartTm(cmbItemCodes.getValue(),txtDescription.getText(),unitPrice,qty,total,btn);
+        ObservableList<CartTm> obList = FXCollections.observableArrayList();
+        obList.add(tm);
+
+        tblCart.setItems(obList);
+
+
+
     }
 }
