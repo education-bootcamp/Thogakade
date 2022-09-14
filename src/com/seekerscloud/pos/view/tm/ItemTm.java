@@ -7,17 +7,17 @@ public class ItemTm {
     private String description;
     private double unitPrice;
     private int qtyOnHand;
-    private Button brn;
+    private Button btn;
 
     public ItemTm() {
     }
 
-    public ItemTm(String code, String description, double unitPrice, int qtyOnHand, Button brn) {
+    public ItemTm(String code, String description, double unitPrice, int qtyOnHand, Button btn) {
         this.code = code;
         this.description = description;
         this.unitPrice = unitPrice;
         this.qtyOnHand = qtyOnHand;
-        this.brn = brn;
+        this.btn = btn;
     }
 
     public String getCode() {
@@ -52,11 +52,11 @@ public class ItemTm {
         this.qtyOnHand = qtyOnHand;
     }
 
-    public Button getBrn() {
-        return brn;
+    public Button getBtn() {
+        return btn;
     }
 
-    public void setBrn(Button brn) {
-        this.brn = brn;
+    public void setBtn(Button btn) {
+        this.btn = btn;
     }
 }

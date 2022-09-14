@@ -110,8 +110,8 @@ public class ItemFormController {
 
     public void saveItemOnAction(ActionEvent actionEvent) {
         Item i1 = new Item(txtCode.getText(),
-                txtUnitPrice.getText(), Double.parseDouble(txtUnitPrice.getText()),
-                Integer.parseInt(txtUnitPrice.getText()));
+                txtDescription.getText(), Double.parseDouble(txtUnitPrice.getText()),
+                Integer.parseInt(txtQtyOnHand.getText()));
 
         if (btnSaveItem.getText().equalsIgnoreCase("Save Item")) {
             boolean isSaved = Database.itemTable.add(i1);
@@ -127,7 +127,7 @@ public class ItemFormController {
                 if (txtCode.getText().equalsIgnoreCase(Database.itemTable.get(i).getCode())) {
                     Database.itemTable.get(i).setDescription(txtDescription.getText());
                     Database.itemTable.get(i).setUnitPrice(Double.parseDouble(txtUnitPrice.getText()));
-                    Database.itemTable.get(i).setQtyOnHand(Integer.parseInt(txtUnitPrice.getText()));
+                    Database.itemTable.get(i).setQtyOnHand(Integer.parseInt(txtQtyOnHand.getText()));
                     searchItems(searchText);
                     new Alert(Alert.AlertType.INFORMATION, "Item Updated!").show();
                     clearFields();
