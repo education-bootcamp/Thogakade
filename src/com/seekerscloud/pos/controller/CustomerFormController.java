@@ -34,19 +34,22 @@ public class CustomerFormController {
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
 
         searchCustomers();
-
         tblCustomer.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-            setData(newValue);
-        });
+                    if (null!=newValue){// newValue!=null
+                        setData(newValue);
+                    }
+                });
 
     }
-    private void setData(CustomerTm tm){
+
+    private void setData(CustomerTm tm) {
         txtId.setText(tm.getId());
         txtName.setText(tm.getName());
         txtAddress.setText(tm.getAddress());
         txtSalary.setText(String.valueOf(tm.getSalary()));
+        btnSaveCustomer.setText("Update Customer");
     }
 
     private void searchCustomers() {
@@ -82,7 +85,7 @@ public class CustomerFormController {
                 txtName.getText(), txtAddress.getText(),
                 Double.parseDouble(txtSalary.getText()));
 
-        if(btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")){
+        if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
             boolean isSaved = Database.customerTable.add(c1);
             if (isSaved) {
                 searchCustomers();
@@ -91,8 +94,16 @@ public class CustomerFormController {
             } else {
                 new Alert(Alert.AlertType.WARNING, "Try Again!").show();
             }
-        }else{
-            // update
+        } else {
+            for (int i = 0; i < Database.customerTable.size(); i++) {
+                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
+                    Database.customerTable.get(i).setName(txtName.getText());
+                    Database.customerTable.get(i).setAddress(txtAddress.getText());
+                    Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
+                    searchCustomers();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+                }
+            }
         }
     }
 
