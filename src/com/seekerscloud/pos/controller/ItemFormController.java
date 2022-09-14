@@ -9,10 +9,14 @@ import com.seekerscloud.pos.view.tm.ItemTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class ItemFormController {
@@ -31,7 +35,7 @@ public class ItemFormController {
     public TableColumn colOption;
 
 
-    private String searchText="";
+    private String searchText = "";
 
     public void initialize() {
         colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -44,13 +48,13 @@ public class ItemFormController {
         tblItem.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    if (null!=newValue){// newValue!=null
+                    if (null != newValue) {// newValue!=null
                         setData(newValue);
                     }
                 });
         txtSearch.textProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    searchText=newValue;
+                    searchText = newValue;
                     searchItems(searchText);
                 });
 
@@ -68,9 +72,9 @@ public class ItemFormController {
         ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
         for (Item i : Database.itemTable
         ) {
-            if(i.getDescription().contains(text)){
+            if (i.getDescription().contains(text)) {
                 Button btn = new Button("Delete");
-                ItemTm tm = new ItemTm(i.getCode(),i.getDescription(),i.getUnitPrice(),i.getQtyOnHand(), btn);
+                ItemTm tm = new ItemTm(i.getCode(), i.getDescription(), i.getUnitPrice(), i.getQtyOnHand(), btn);
                 tmList.add(tm);
 
                 btn.setOnAction(event -> {
@@ -93,10 +97,15 @@ public class ItemFormController {
         tblItem.setItems(tmList);
     }
 
-    public void backToHomeOnAction(ActionEvent actionEvent) {
+    public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage= (Stage) itemFormContext.getScene().getWindow();
+        stage.setScene(new Scene
+                (FXMLLoader.load(getClass().
+                        getResource("../view/DashboardForm.fxml"))));
     }
 
     public void newItemOnAction(ActionEvent actionEvent) {
+        btnSaveItem.setText("Save Item");
     }
 
     public void saveItemOnAction(ActionEvent actionEvent) {
@@ -109,18 +118,18 @@ public class ItemFormController {
             if (isSaved) {
                 searchItems(searchText);
                 clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
+                new Alert(Alert.AlertType.INFORMATION, "Item Saved!").show();
             } else {
                 new Alert(Alert.AlertType.WARNING, "Try Again!").show();
             }
         } else {
-            for (int i = 0; i < Database.customerTable.size(); i++) {
-                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
-                    Database.customerTable.get(i).setName(txtName.getText());
-                    Database.customerTable.get(i).setAddress(txtAddress.getText());
-                    Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
-                    searchCustomers(searchText);
-                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+            for (int i = 0; i < Database.itemTable.size(); i++) {
+                if (txtCode.getText().equalsIgnoreCase(Database.itemTable.get(i).getCode())) {
+                    Database.itemTable.get(i).setDescription(txtDescription.getText());
+                    Database.itemTable.get(i).setUnitPrice(Double.parseDouble(txtUnitPrice.getText()));
+                    Database.itemTable.get(i).setQtyOnHand(Integer.parseInt(txtUnitPrice.getText()));
+                    searchItems(searchText);
+                    new Alert(Alert.AlertType.INFORMATION, "Item Updated!").show();
                     clearFields();
                 }
             }
