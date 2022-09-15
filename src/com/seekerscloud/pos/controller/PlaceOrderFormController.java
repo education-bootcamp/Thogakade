@@ -133,8 +133,27 @@ public class PlaceOrderFormController {
         txtDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
     }
 
+    private boolean checkQty(String code, int qty){
+        for (Item i:Database.itemTable
+             ) {
+            if (code.equals(i.getCode())){
+                if (i.getQtyOnHand()>=qty){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
     ObservableList<CartTm> obList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
+
+        if (!checkQty(cmbItemCodes.getValue(),Integer.parseInt(txtQty.getText()))){
+            new Alert(Alert.AlertType.WARNING, "Invalid Qty").show();
+            return;
+        }
+
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         int qty=Integer.parseInt(txtQty.getText());
         double total = unitPrice*qty;
