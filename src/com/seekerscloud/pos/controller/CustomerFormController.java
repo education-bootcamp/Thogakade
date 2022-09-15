@@ -153,15 +153,26 @@ public class CustomerFormController {
             }
 
         } else {
-            for (int i = 0; i < Database.customerTable.size(); i++) {
-                if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
-                    Database.customerTable.get(i).setName(txtName.getText());
-                    Database.customerTable.get(i).setAddress(txtAddress.getText());
-                    Database.customerTable.get(i).setSalary(Double.parseDouble(txtSalary.getText()));
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                        "root", "1234");
+                String sql = "UPDATE Customer SET name=?,address=?,salary=? WHERE id=?";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1, c1.getName());
+                statement.setString(2, c1.getAddress());
+                statement.setDouble(3, c1.getSalary());
+                statement.setString(4, c1.getId());
+                if (statement.executeUpdate()>0) {
                     searchCustomers(searchText);
-                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
                     clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
                 }
+            }catch (ClassNotFoundException | SQLException e){
+                e.printStackTrace();
             }
         }
     }
