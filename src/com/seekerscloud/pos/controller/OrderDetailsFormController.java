@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -47,11 +48,11 @@ public class OrderDetailsFormController {
             btn.setOnAction(e->{
                         try {
                 FXMLLoader loader= new FXMLLoader(getClass().getResource("../view/ItemDetailsForm.fxml"));
-                loader.load();
+                Parent parent = loader.load();
                 ItemDetailsFormController controller = loader.getController();
                 controller.loadOrderDetails(tm.getOrderId());
                 Stage stage= new Stage();
-                stage.setScene(new Scene());
+                stage.setScene(new Scene(parent));
                 stage.show();
 
                 } catch (IOException ex) {
