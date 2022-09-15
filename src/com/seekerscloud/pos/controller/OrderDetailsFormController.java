@@ -43,6 +43,10 @@ public class OrderDetailsFormController {
             OrderTm tm= new OrderTm(
                     o.getOrderId(),o.getCustomer(),o.getDate(),o.getTotalCost(),btn);
             tmList.add(tm);
+
+
+
+
         }
         tblOrders.setItems(tmList);
     }
