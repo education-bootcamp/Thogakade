@@ -167,6 +167,12 @@ public class PlaceOrderFormController {
         }else{
             int tempQty=obList.get(row).getQty()+qty;
             double tempTotal = unitPrice* tempQty;
+
+            if (!checkQty(cmbItemCodes.getValue(),tempQty)){
+                new Alert(Alert.AlertType.WARNING, "Invalid Qty").show();
+                return;
+            }
+
             obList.get(row).setQty(tempQty);
             obList.get(row).setTotal(tempTotal);
             tblCart.refresh();
