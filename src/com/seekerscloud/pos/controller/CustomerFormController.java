@@ -68,32 +68,48 @@ public class CustomerFormController {
     }
 
     private void searchCustomers(String text) {
-        ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
-        for (Customer c : Database.customerTable
-        ) {
-            if(c.getName().contains(text) || c.getAddress().contains(text)){
-                Button btn = new Button("Delete");
-                CustomerTm tm = new CustomerTm(c.getId(), c.getName(), c.getAddress(), c.getSalary(), btn);
-                tmList.add(tm);
 
-                btn.setOnAction(event -> {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                            "are you sure whether do you want to delete this customer?",
-                            ButtonType.YES, ButtonType.NO);
-                    Optional<ButtonType> buttonType = alert.showAndWait();
-                    if (buttonType.get() == ButtonType.YES) {
-                        boolean isDeleted = Database.customerTable.remove(c);
-                        if (isDeleted) {
-                            searchCustomers(searchText);
-                            new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
-                        } else {
-                            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+        try {
+
+            ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT * FROM Customer";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next()){
+                    Button btn = new Button("Delete");
+                    CustomerTm tm = new CustomerTm(
+                            set.getString(1),
+                            set.getString(2),
+                            set.getString(3),
+                            set.getDouble(4),
+                            btn);
+                    tmList.add(tm);
+                  /*  btn.setOnAction(event -> {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                                "are you sure whether do you want to delete this customer?",
+                                ButtonType.YES, ButtonType.NO);
+                        Optional<ButtonType> buttonType = alert.showAndWait();
+                        if (buttonType.get() == ButtonType.YES) {
+                            boolean isDeleted = Database.customerTable.remove(c);
+                            if (isDeleted) {
+                                searchCustomers(searchText);
+                                new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
+                            } else {
+                                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                            }
                         }
-                    }
-                });
+                    }); */
             }
+            tblCustomer.setItems(tmList);
+
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
-        tblCustomer.setItems(tmList);
+
     }
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
