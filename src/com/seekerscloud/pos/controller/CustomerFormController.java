@@ -15,6 +15,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -101,6 +105,21 @@ public class CustomerFormController {
                 Double.parseDouble(txtSalary.getText()));
 
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
+            try {
+                // 1 step [driver load ram]
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                // 2 step [create connection]
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                        "root","1234");
+                // 3 step [create statement]
+                Statement statement = connection.createStatement();
+                // 4 step [create query]
+                String sql="INSERT INTO Customer VALUES('"++"'"++"'"++"'"++"'"++"')";
+                // 5 step [statement execute]
+            }catch (ClassNotFoundException | SQLException e){
+                e.printStackTrace();
+            }
+
             boolean isSaved = Database.customerTable.add(c1);
             if (isSaved) {
                 searchCustomers(searchText);
