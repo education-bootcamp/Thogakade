@@ -122,13 +122,13 @@ public class CustomerFormController {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
                         "root","1234");
-                String sql="INSERT INTO Customer Values(?,?,?,?)";
+                String sql="INSERT INTO Customer VALUES (?,?,?,?)";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1,c1.getId());
                 statement.setString(2,c1.getName());
                 statement.setString(3,c1.getAddress());
                 statement.setDouble(4,c1.getSalary());
-                if (statement.executeUpdate(sql)>0) {
+                if (statement.executeUpdate()>0) {
                     searchCustomers(searchText);
                     clearFields();
                     new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
