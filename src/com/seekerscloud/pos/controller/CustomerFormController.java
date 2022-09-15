@@ -88,21 +88,33 @@ public class CustomerFormController {
                             set.getDouble(4),
                             btn);
                     tmList.add(tm);
-                  /*  btn.setOnAction(event -> {
+                    btn.setOnAction(event -> {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                                 "are you sure whether do you want to delete this customer?",
                                 ButtonType.YES, ButtonType.NO);
                         Optional<ButtonType> buttonType = alert.showAndWait();
                         if (buttonType.get() == ButtonType.YES) {
-                            boolean isDeleted = Database.customerTable.remove(c);
-                            if (isDeleted) {
-                                searchCustomers(searchText);
-                                new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
-                            } else {
-                                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+
+                            try {
+                                Class.forName("com.mysql.cj.jdbc.Driver");
+                                Connection connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                                        "root", "1234");
+                                String sql1 = "DELETE FROM Customer WHERE id=?";
+                                PreparedStatement statement1 = connection1.prepareStatement(sql1);
+                                statement1.setString(1,tm.getId());
+                                if (statement1.executeUpdate()>0) {
+                                    searchCustomers(searchText);
+                                    new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
+                                } else {
+                                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                                }
+                            }catch (ClassNotFoundException | SQLException e){
+                                e.printStackTrace();
                             }
+
+
                         }
-                    }); */
+                    });
             }
             tblCustomer.setItems(tmList);
 
