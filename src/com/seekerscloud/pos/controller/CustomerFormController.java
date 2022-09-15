@@ -108,26 +108,33 @@ public class CustomerFormController {
             try {
                 // 1 step [driver load ram]
                 Class.forName("com.mysql.cj.jdbc.Driver");
+
                 // 2 step [create connection]
                 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
                         "root","1234");
+
                 // 3 step [create statement]
                 Statement statement = connection.createStatement();
+
                 // 4 step [create query]
-                String sql="INSERT INTO Customer VALUES('"++"'"++"'"++"'"++"'"++"')";
+                String sql="INSERT INTO Customer VALUES('"+c1.getId()+"'"+
+                        c1.getName()+"'"+c1.getAddress()+"'"+c1.getSalary()+"')";
+
                 // 5 step [statement execute]
+                int isSaved = statement.executeUpdate(sql);
+
+                if (isSaved>0) {
+                    searchCustomers(searchText);
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                }
+
             }catch (ClassNotFoundException | SQLException e){
                 e.printStackTrace();
             }
 
-            boolean isSaved = Database.customerTable.add(c1);
-            if (isSaved) {
-                searchCustomers(searchText);
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
-            }
         } else {
             for (int i = 0; i < Database.customerTable.size(); i++) {
                 if (txtId.getText().equalsIgnoreCase(Database.customerTable.get(i).getId())) {
