@@ -117,8 +117,8 @@ public class CustomerFormController {
                 Statement statement = connection.createStatement();
 
                 // 4 step [create query]
-                String sql="INSERT INTO Customer VALUES('"+c1.getId()+"'"+
-                        c1.getName()+"'"+c1.getAddress()+"'"+c1.getSalary()+"')";
+                String sql="INSERT INTO Customer VALUES('"+c1.getId()+"','"+
+                        c1.getName()+"','"+c1.getAddress()+"','"+c1.getSalary()+"')";
 
                 // 5 step [statement execute]
                 int isSaved = statement.executeUpdate(sql);
