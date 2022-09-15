@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -23,6 +24,13 @@ public class ItemDetailsFormController {
     public TableColumn colUnitPrice;
     public TableColumn colQty;
     public TableColumn colTotal;
+
+    public void initialize(){
+        colCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+    }
 
     public void loadOrderDetails(String id){
         for (Order o: Database.orderTable

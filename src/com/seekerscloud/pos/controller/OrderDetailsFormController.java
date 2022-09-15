@@ -44,7 +44,21 @@ public class OrderDetailsFormController {
                     o.getOrderId(),o.getCustomer(),o.getDate(),o.getTotalCost(),btn);
             tmList.add(tm);
 
+            btn.setOnAction(e->{
+                        try {
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("../view/ItemDetailsForm.fxml"));
+                loader.load();
+                ItemDetailsFormController controller = loader.getController();
+                controller.loadOrderDetails(tm.getOrderId());
+                Stage stage= new Stage();
+                stage.setScene(new Scene());
+                stage.show();
 
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            });
 
 
         }
