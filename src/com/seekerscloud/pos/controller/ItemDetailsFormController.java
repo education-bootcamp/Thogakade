@@ -1,5 +1,6 @@
 package com.seekerscloud.pos.controller;
 
+import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.ItemDetails;
 import com.seekerscloud.pos.modal.Order;
@@ -16,6 +17,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class ItemDetailsFormController {
     public AnchorPane itemDetailsContext;
@@ -33,22 +36,28 @@ public class ItemDetailsFormController {
     }
 
     public void loadOrderDetails(String id){
-        for (Order o: Database.orderTable
-             ) {
-            if (o.getOrderId().equals(id)){
-                ObservableList<ItemDetailsTm> tmList= FXCollections.observableArrayList();
-                for (ItemDetails d:o.getItemDetails()
-                     ) {
-                    double tempUnitPrice=d.getUnitPrice();
-                    int tempQtyOnHand=d.getQty();
-                    double tempTotal=tempQtyOnHand*tempUnitPrice;
-                    tmList.add(new ItemDetailsTm(
-                            d.getCode(),d.getUnitPrice(),d.getQty(),tempTotal
-                    ));
-                }
-                tblItems.setItems(tmList);
-                return;
+
+
+        try{
+            String sql = "SELECT o.orderId,d.itemCode,d.orderId,d.unitPrice,d.qty" +
+                    " FROM `Order` o INNER JOIN `Order Details` d ON o.orderId=d.orderId AND o.orderId=?";
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1,id);
+            ResultSet set = statement.executeQuery();
+            ObservableList<ItemDetailsTm> tmList= FXCollections.observableArrayList();
+            while(set.next()){
+                double tempUnitPrice=set.getDouble(4);
+                int tempQtyOnHand=set.getInt(5);
+                double tempTotal=tempQtyOnHand*tempUnitPrice;
+                tmList.add(new ItemDetailsTm(
+                        set.getString(2),tempUnitPrice,tempQtyOnHand,tempTotal
+                ));
+
             }
+            tblItems.setItems(tmList);
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
