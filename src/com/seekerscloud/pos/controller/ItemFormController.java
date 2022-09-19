@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.Optional;
 
 public class ItemFormController {
@@ -69,32 +70,60 @@ public class ItemFormController {
     }
 
     private void searchItems(String text) {
-        ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
-        for (Item i : Database.itemTable
-        ) {
-            if (i.getDescription().contains(text)) {
-                Button btn = new Button("Delete");
-                ItemTm tm = new ItemTm(i.getCode(), i.getDescription(), i.getUnitPrice(), i.getQtyOnHand(), btn);
-                tmList.add(tm);
+        String searchText="%"+text+"%";
+        try {
 
+            ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT * FROM Item WHERE description LIKE ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,searchText);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next()){
+                Button btn = new Button("Delete");
+                ItemTm tm = new ItemTm(
+                        set.getString(1),
+                        set.getString(2),
+                        set.getDouble(3),
+                        set.getInt(4),
+                        btn);
+                tmList.add(tm);
                 btn.setOnAction(event -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                             "are you sure whether do you want to delete this Item?",
                             ButtonType.YES, ButtonType.NO);
                     Optional<ButtonType> buttonType = alert.showAndWait();
                     if (buttonType.get() == ButtonType.YES) {
-                        boolean isDeleted = Database.itemTable.remove(i);
-                        if (isDeleted) {
-                            searchItems(searchText);
-                            new Alert(Alert.AlertType.INFORMATION, "Item Deleted!").show();
-                        } else {
-                            new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+                            Connection connection1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                                    "root", "1234");
+                            String sql1 = "DELETE FROM Item WHERE code=?";
+                            PreparedStatement statement1 = connection1.prepareStatement(sql1);
+                            statement1.setString(1,tm.getCode());
+                            if (statement1.executeUpdate()>0) {
+                                searchItems(searchText);
+                                new Alert(Alert.AlertType.INFORMATION, "Item Deleted!").show();
+                            } else {
+                                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                            }
+                        }catch (ClassNotFoundException | SQLException e){
+                            e.printStackTrace();
                         }
+
+
                     }
                 });
             }
+            tblItem.setItems(tmList);
+
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
-        tblItem.setItems(tmList);
     }
 
     public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
@@ -114,24 +143,47 @@ public class ItemFormController {
                 Integer.parseInt(txtQtyOnHand.getText()));
 
         if (btnSaveItem.getText().equalsIgnoreCase("Save Item")) {
-            boolean isSaved = Database.itemTable.add(i1);
-            if (isSaved) {
-                searchItems(searchText);
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Item Saved!").show();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                        "root","1234");
+                String sql="INSERT INTO Item VALUES (?,?,?,?)";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1,i1.getCode());
+                statement.setString(2,i1.getDescription());
+                statement.setDouble(3,i1.getUnitPrice());
+                statement.setInt(4,i1.getQtyOnHand());
+                if (statement.executeUpdate()>0) {
+                    searchItems(searchText);
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Item Saved!").show();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                }
+
+            }catch (ClassNotFoundException | SQLException e){
+                e.printStackTrace();
             }
         } else {
-            for (int i = 0; i < Database.itemTable.size(); i++) {
-                if (txtCode.getText().equalsIgnoreCase(Database.itemTable.get(i).getCode())) {
-                    Database.itemTable.get(i).setDescription(txtDescription.getText());
-                    Database.itemTable.get(i).setUnitPrice(Double.parseDouble(txtUnitPrice.getText()));
-                    Database.itemTable.get(i).setQtyOnHand(Integer.parseInt(txtQtyOnHand.getText()));
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                        "root", "1234");
+                String sql = "UPDATE Item SET description=?,unitPrice=?,qtyOnHand=? WHERE code=?";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1,i1.getDescription());
+                statement.setDouble(2,i1.getUnitPrice());
+                statement.setInt(3,i1.getQtyOnHand());
+                statement.setString(4,i1.getCode());
+                if (statement.executeUpdate()>0) {
                     searchItems(searchText);
-                    new Alert(Alert.AlertType.INFORMATION, "Item Updated!").show();
                     clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
                 }
+            }catch (ClassNotFoundException | SQLException e){
+                e.printStackTrace();
             }
         }
     }
