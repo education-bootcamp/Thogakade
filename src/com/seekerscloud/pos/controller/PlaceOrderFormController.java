@@ -325,8 +325,14 @@ public class PlaceOrderFormController {
 
             boolean isOrderSaved = statement.executeUpdate()>0;
             if (isOrderSaved){
-                //manageQty();
-                //clearAll();
+                boolean isAllUpdated = manageQty(details);
+                if (isAllUpdated){
+                    new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+                    clearAll();
+                }else{
+                    new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+                }
+
             }else{
                 new Alert(Alert.AlertType.WARNING, "Try Again!").show();
             }
@@ -336,18 +342,33 @@ public class PlaceOrderFormController {
         }
     }
 
-    private void manageQty() {
-        for (CartTm tm:obList
+    private boolean manageQty(ArrayList<ItemDetails> details) {
+        for (ItemDetails d:details
              ) {
-            for (Item i: Database.itemTable
-                 ) {
-                if (i.getCode().equals(tm.getCode())){
-                    i.setQtyOnHand(i.getQtyOnHand()-tm.getQty());
-                    break;
-                }
+            boolean isQtyUpdated = update(d);
+            if (!isQtyUpdated){
+                return false;
             }
         }
+        return true;
     }
+
+    private boolean update(ItemDetails d) {
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "UPDATE Item SET qtyOnHand=(qtyOnHand-?) WHERE code=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,d.getQty());
+            statement.setString(2,d.getCode());
+            return statement.executeUpdate()>0;
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     private void clearAll() {
         obList.clear();
