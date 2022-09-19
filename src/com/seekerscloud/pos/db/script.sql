@@ -19,3 +19,12 @@ CREATE TABLE IF NOT EXISTS Item(
     CONSTRAINT PRIMARY KEY (code)
 );
 #===================
+CREATE TABLE IF NOT EXISTS `Order`(
+    orderId VARCHAR(45),
+    date VARCHAR(250),
+    totalCost DOUBLE,
+    customer VARCHAR(45),
+    CONSTRAINT PRIMARY KEY (orderId),
+    CONSTRAINT FOREIGN KEY (customer) REFERENCES Customer(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+    );

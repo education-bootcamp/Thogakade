@@ -309,9 +309,31 @@ public class PlaceOrderFormController {
                 Double.parseDouble(lblTotal.getText()),
                 cmbCustomerIds.getValue(),details
         );
-        Database.orderTable.add(order);
-        manageQty();
-        clearAll();
+
+// place Order
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "INSERT `Order` VALUES(?,?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,order.getOrderId());
+            statement.setString(2,txtDate.getText());
+            statement.setDouble(3,order.getTotalCost());
+            statement.setString(4,order.getCustomer());
+
+            boolean isOrderSaved = statement.executeUpdate()>0;
+            if (isOrderSaved){
+                //manageQty();
+                //clearAll();
+            }else{
+                new Alert(Alert.AlertType.WARNING, "Try Again!").show();
+            }
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     private void manageQty() {
