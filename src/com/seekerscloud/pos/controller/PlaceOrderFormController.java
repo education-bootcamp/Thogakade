@@ -141,7 +141,7 @@ public class PlaceOrderFormController {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
                     "root", "1234");
-            String sql = "SELECT id FROM Item";
+            String sql = "SELECT code FROM Item";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet set = statement.executeQuery();
 
@@ -188,20 +188,36 @@ public class PlaceOrderFormController {
     }
 
     private boolean checkQty(String code, int qty){
-        for (Item i:Database.itemTable
-             ) {
-            if (code.equals(i.getCode())){
-                if (i.getQtyOnHand()>=qty){
+
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT qtyOnHand FROM Item WHERE code=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,code);
+            ResultSet set = statement.executeQuery();
+
+            if (set.next()){
+                int tempQty=set.getInt(1);
+                if (tempQty>=qty){
                     return true;
                 }else{
                     return false;
                 }
+            }else{
+                return false;
             }
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
         return false;
     }
     ObservableList<CartTm> obList = FXCollections.observableArrayList();
     public void addToCartOnAction(ActionEvent actionEvent) {
+
 
         if (!checkQty(cmbItemCodes.getValue(),Integer.parseInt(txtQty.getText()))){
             new Alert(Alert.AlertType.WARNING, "Invalid Qty").show();
