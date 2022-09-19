@@ -80,15 +80,30 @@ public class PlaceOrderFormController {
     }
 
     private void setOrderId() {
-        if (Database.orderTable.isEmpty()){
-            txtOrderId.setText("D-1");
-            return;
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT orderId FROM `Order` ORDER BY orderId DESC LIMIT 1"; // 10 not working... (UNSIGNED)
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet set = statement.executeQuery();
+            if (set.next()){
+                String tempOrderId=set.getString(1);
+                String[] array = tempOrderId.split("-");//[D,3]
+                int tempNumber=Integer.parseInt(array[1]);
+                int finalizeOrderId=tempNumber+1;
+                txtOrderId.setText("D-"+finalizeOrderId);
+            }else {
+                txtOrderId.setText("D-1");
+                return;
+            }
+
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
-        String tempOrderId=Database.orderTable.get(Database.orderTable.size()-1).getOrderId();// D-3
-        String[] array = tempOrderId.split("-");//[D,3]
-        int tempNumber=Integer.parseInt(array[1]);
-        int finalizeOrderId=tempNumber+1;
-        txtOrderId.setText("D-"+finalizeOrderId);
+
     }
 
     private void setItemDetails() {
