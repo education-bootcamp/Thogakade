@@ -343,13 +343,41 @@ public class PlaceOrderFormController {
     }
 
     private boolean manageQty(ArrayList<ItemDetails> details) {
-        for (ItemDetails d:details
-             ) {
-            boolean isQtyUpdated = update(d);
-            if (!isQtyUpdated){
-                return false;
+
+        try{
+
+            for (ItemDetails d:details
+            ) {
+
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                        "root", "1234");
+                String sql = "INSERT `Order Details` VALUES(?,?,?,?)";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1,d.getCode());
+                statement.setString(2,txtOrderId.getText());
+                statement.setDouble(3,d.getUnitPrice());
+                statement.setInt(4,d.getQty());
+
+                boolean isOrderDetailsSaved = statement.executeUpdate()>0;
+
+                if (isOrderDetailsSaved){
+                    boolean isQtyUpdated = update(d);
+                    if (!isQtyUpdated){
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+
+
             }
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
+
+
         return true;
     }
 
