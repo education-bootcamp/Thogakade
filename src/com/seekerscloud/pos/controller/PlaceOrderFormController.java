@@ -80,7 +80,6 @@ public class PlaceOrderFormController {
     }
 
     private void setOrderId() {
-
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
@@ -96,16 +95,12 @@ public class PlaceOrderFormController {
                 txtOrderId.setText("D-"+finalizeOrderId);
             }else {
                 txtOrderId.setText("D-1");
-                return;
             }
-
-
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
 
     }
-
     private void setItemDetails() {
 
         try{
