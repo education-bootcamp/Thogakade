@@ -1,5 +1,6 @@
 package com.seekerscloud.pos.controller;
 
+import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.db.Database;
 import com.seekerscloud.pos.modal.Customer;
 import com.seekerscloud.pos.modal.Item;
@@ -81,11 +82,9 @@ public class PlaceOrderFormController {
 
     private void setOrderId() {
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "SELECT orderId FROM `Order` ORDER BY orderId DESC LIMIT 1"; // 10 not working... (UNSIGNED)
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             ResultSet set = statement.executeQuery();
             if (set.next()){
                 String tempOrderId=set.getString(1);
@@ -105,11 +104,9 @@ public class PlaceOrderFormController {
 
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "SELECT * FROM Item WHERE code=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1,cmbItemCodes.getValue());
             ResultSet set = statement.executeQuery();
             if (set.next()){
@@ -127,11 +124,9 @@ public class PlaceOrderFormController {
 
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "SELECT * FROM Customer WHERE id=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1,cmbCustomerIds.getValue());
             ResultSet set = statement.executeQuery();
             if (set.next()){
@@ -148,11 +143,9 @@ public class PlaceOrderFormController {
     private void loadAllItemCodes() {
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "SELECT code FROM Item";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             ResultSet set = statement.executeQuery();
 
             ArrayList<String> idList = new ArrayList<>();
@@ -170,11 +163,8 @@ public class PlaceOrderFormController {
 
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
-            String sql = "SELECT id FROM Customer";
-            PreparedStatement statement = connection.prepareStatement(sql);
+String sql="SELECT id  FROM Customer";
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             ResultSet set = statement.executeQuery();
 
             ArrayList<String> idList = new ArrayList<>();
@@ -201,11 +191,9 @@ public class PlaceOrderFormController {
 
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "SELECT qtyOnHand FROM Item WHERE code=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1,code);
             ResultSet set = statement.executeQuery();
 
@@ -323,11 +311,9 @@ public class PlaceOrderFormController {
 // place Order
         try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "INSERT `Order` VALUES(?,?,?,?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1,order.getOrderId());
             statement.setString(2,txtDate.getText());
             statement.setDouble(3,order.getTotalCost());
@@ -359,11 +345,9 @@ public class PlaceOrderFormController {
             for (ItemDetails d:details
             ) {
 
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                        "root", "1234");
+
                 String sql = "INSERT `Order Details` VALUES(?,?,?,?)";
-                PreparedStatement statement = connection.prepareStatement(sql);
+                PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
                 statement.setString(1,d.getCode());
                 statement.setString(2,txtOrderId.getText());
                 statement.setDouble(3,d.getUnitPrice());
@@ -393,11 +377,9 @@ public class PlaceOrderFormController {
 
     private boolean update(ItemDetails d) {
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
-                    "root", "1234");
+
             String sql = "UPDATE Item SET qtyOnHand=(qtyOnHand-?) WHERE code=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
             statement.setInt(1,d.getQty());
             statement.setString(2,d.getCode());
             return statement.executeUpdate()>0;
