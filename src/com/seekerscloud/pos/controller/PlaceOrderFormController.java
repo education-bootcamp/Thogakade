@@ -92,24 +92,46 @@ public class PlaceOrderFormController {
     }
 
     private void setItemDetails() {
-        for (Item i:Database.itemTable
-        ) {
-            if (i.getCode().equals(cmbItemCodes.getValue())){
-                txtDescription.setText(i.getDescription());
-                txtUnitPrice.setText(String.valueOf(i.getUnitPrice()));
-                txtQtyOnHand.setText(String.valueOf(i.getQtyOnHand()));
+
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT * FROM Item WHERE code=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,cmbItemCodes.getValue());
+            ResultSet set = statement.executeQuery();
+            if (set.next()){
+                txtDescription.setText(set.getString(2));
+                txtUnitPrice.setText(String.valueOf(set.getDouble(3)));
+                txtQtyOnHand.setText(String.valueOf(set.getInt(4)));
             }
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
     private void setCustomerDetails() {
-        for (Customer c:Database.customerTable
-             ) {
-            if (c.getId().equals(cmbCustomerIds.getValue())){
-                txtName.setText(c.getName());
-                txtAddress.setText(c.getAddress());
-                txtSalary.setText(String.valueOf(c.getSalary()));
+
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT * FROM Customer WHERE id=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,cmbCustomerIds.getValue());
+            ResultSet set = statement.executeQuery();
+            if (set.next()){
+                txtName.setText(set.getString(2));
+                txtAddress.setText(set.getString(3));
+                txtSalary.setText(String.valueOf(set.getInt(4)));
             }
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
