@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,8 +120,24 @@ public class PlaceOrderFormController {
     }
 
     private void loadAllCustomerIds() {
-        for(Customer c: Database.customerTable){
-            cmbCustomerIds.getItems().add(c.getId());
+
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT id FROM Customer";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet set = statement.executeQuery();
+
+            ArrayList<String> idList = new ArrayList<>();
+            while (set.next()){
+                idList.add(set.getString(1));
+            }
+            ObservableList<String> obList=FXCollections.observableArrayList(idList);
+            cmbCustomerIds.setItems(obList);
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
