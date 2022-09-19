@@ -114,8 +114,23 @@ public class PlaceOrderFormController {
     }
 
     private void loadAllItemCodes() {
-        for(Item i : Database.itemTable){
-            cmbItemCodes.getItems().add(i.getCode());
+        try{
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Thogakade",
+                    "root", "1234");
+            String sql = "SELECT id FROM Item";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet set = statement.executeQuery();
+
+            ArrayList<String> idList = new ArrayList<>();
+            while (set.next()){
+                idList.add(set.getString(1));
+            }
+            ObservableList<String> obList=FXCollections.observableArrayList(idList);
+            cmbItemCodes.setItems(obList);
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
