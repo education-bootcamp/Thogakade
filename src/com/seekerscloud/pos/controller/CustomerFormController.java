@@ -151,13 +151,15 @@ public class CustomerFormController {
 
             try {
 
-                String sql = "UPDATE Customer SET name=?,address=?,salary=? WHERE id=?";
-                PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
-                statement.setString(1, c1.getName());
-                statement.setString(2, c1.getAddress());
-                statement.setDouble(3, c1.getSalary());
-                statement.setString(4, c1.getId());
-                if (statement.executeUpdate()>0) {
+                boolean isCustomerUpdated = new DatabaseAccessCode().updateCustomer(
+                        new Customer(
+                                txtId.getText(),
+                                txtName.getText(), txtAddress.getText(),
+                                Double.parseDouble(txtSalary.getText())
+                        )
+                );
+
+                if (isCustomerUpdated) {
                     searchCustomers(searchText);
                     clearFields();
                     new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
