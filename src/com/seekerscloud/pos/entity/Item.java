@@ -1,6 +1,6 @@
 package com.seekerscloud.pos.entity;
 
-public class Item {
+public class Item implements SuperEntity{
     private String code;
     private String description;
     private double unitPrice;
