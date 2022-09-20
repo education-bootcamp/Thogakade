@@ -1,9 +1,11 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.seekerscloud.pos.dao.DatabaseAccessCode;
 import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.db.Database;
-import com.seekerscloud.pos.modal.Customer;
+
+import com.seekerscloud.pos.entity.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,19 +125,17 @@ public class CustomerFormController {
     }
 
     public void saveCustomerOnAction(ActionEvent actionEvent) {
-        Customer c1 = new Customer(txtId.getText(),
-                txtName.getText(), txtAddress.getText(),
-                Double.parseDouble(txtSalary.getText()));
 
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
             try {
-                String sql="INSERT INTO Customer VALUES (?,?,?,?)";
-                PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
-                statement.setString(1,c1.getId());
-                statement.setString(2,c1.getName());
-                statement.setString(3,c1.getAddress());
-                statement.setDouble(4,c1.getSalary());
-                if (statement.executeUpdate()>0) {
+                boolean isCustomerSaved = new DatabaseAccessCode().saveCustomer(
+                        new Customer(
+                                txtId.getText(),
+                                txtName.getText(), txtAddress.getText(),
+                                Double.parseDouble(txtSalary.getText())
+                        )
+                );
+                if (isCustomerSaved) {
                     searchCustomers(searchText);
                     clearFields();
                     new Alert(Alert.AlertType.INFORMATION, "Customer Saved!").show();
