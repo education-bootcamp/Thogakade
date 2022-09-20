@@ -22,17 +22,24 @@ public class CustomerBoImpl implements CustomerBo {
     }
 
     @Override
-    public boolean updateCustomer(CustomerDto dto) {
-        return false;
+    public boolean updateCustomer(CustomerDto dto) throws SQLException, ClassNotFoundException {
+        return dao.update(
+                new Customer(dto.getId(), dto.getName(), dto.getAddress(), dto.getSalary())
+        );
     }
 
     @Override
-    public boolean deleteCustomer(String id) {
-        return false;
+    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
+        return dao.delete(id);
     }
 
     @Override
-    public ArrayList<CustomerDto> searchCustomers(String searchText) {
-        return null;
+    public ArrayList<CustomerDto> searchCustomers(String searchText) throws SQLException, ClassNotFoundException {
+        ArrayList<Customer> entities= dao.searchCustomers(searchText);
+        ArrayList<CustomerDto> dtoList= new ArrayList<>();
+        for (Customer c: entities){
+            dtoList.add(new CustomerDto(c.getId(),c.getName(),c.getAddress(),c.getSalary()));
+        }
+        return dtoList;
     }
 }
