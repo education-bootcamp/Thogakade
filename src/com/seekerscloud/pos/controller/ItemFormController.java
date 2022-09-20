@@ -1,8 +1,6 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.seekerscloud.pos.dao.DatabaseAccessCode;
-import com.seekerscloud.pos.db.DBConnection;
 import com.seekerscloud.pos.entity.Item;
 import com.seekerscloud.pos.view.tm.ItemTm;
 import javafx.collections.FXCollections;

@@ -1,9 +1,6 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.seekerscloud.pos.dao.DatabaseAccessCode;
-import com.seekerscloud.pos.db.DBConnection;
-import com.seekerscloud.pos.db.Database;
 
 import com.seekerscloud.pos.entity.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTm;
