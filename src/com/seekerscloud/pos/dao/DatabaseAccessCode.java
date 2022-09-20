@@ -28,4 +28,12 @@ public class DatabaseAccessCode {
         statement.setString(4, c.getId());
         return statement.executeUpdate()>0;
     }
+    // delete Customer
+    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
+        String sql1 = "DELETE FROM Customer WHERE id=?";
+        PreparedStatement statement1 = DBConnection.getInstance().getConnection().prepareStatement(sql1);
+        statement1.setString(1,id);
+        return statement1.executeUpdate()>0;
+    }
+
 }
