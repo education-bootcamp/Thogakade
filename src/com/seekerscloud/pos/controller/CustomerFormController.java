@@ -76,19 +76,15 @@ public class CustomerFormController {
 
             ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
-            String sql = "SELECT * FROM Customer WHERE name LIKE ? || address LIKE ?";
-            PreparedStatement statement = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            statement.setString(1,searchText);
-            statement.setString(2,searchText);
-            ResultSet set = statement.executeQuery();
+           ArrayList<Customer> customerList= new DatabaseAccessCode().searchCustomers(searchText);
 
-            while (set.next()){
+            for (Customer c: customerList){
                     Button btn = new Button("Delete");
                     CustomerTm tm = new CustomerTm(
-                            set.getString(1),
-                            set.getString(2),
-                            set.getString(3),
-                            set.getDouble(4),
+                            c.getId(),
+                            c.getName(),
+                            c.getAddress(),
+                            c.getSalary(),
                             btn);
                     tmList.add(tm);
                     btn.setOnAction(event -> {
