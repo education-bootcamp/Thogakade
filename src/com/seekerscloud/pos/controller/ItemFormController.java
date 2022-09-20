@@ -1,6 +1,7 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.seekerscloud.pos.dao.custom.impl.ItemDaoImpl;
 import com.seekerscloud.pos.entity.Item;
 import com.seekerscloud.pos.view.tm.ItemTm;
 import javafx.collections.FXCollections;
@@ -73,7 +74,7 @@ public class ItemFormController {
 
             ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
 
-            ArrayList<Item> itemList=new DatabaseAccessCode().searchItems(searchText);
+            ArrayList<Item> itemList=new ItemDaoImpl().searchItems(searchText);
 
             for (Item i:itemList){
                 Button btn = new Button("Delete");
@@ -91,7 +92,7 @@ public class ItemFormController {
                     Optional<ButtonType> buttonType = alert.showAndWait();
                     if (buttonType.get() == ButtonType.YES) {
                         try {
-                            if (new DatabaseAccessCode().deleteItem(tm.getCode())) {
+                            if (new ItemDaoImpl().delete(tm.getCode())) {
                                 searchItems(searchText);
                                 new Alert(Alert.AlertType.INFORMATION, "Item Deleted!").show();
                             } else {
@@ -129,7 +130,7 @@ public class ItemFormController {
         if (btnSaveItem.getText().equalsIgnoreCase("Save Item")) {
             try {
 
-                boolean isItemSaved = new DatabaseAccessCode().saveItem(
+                boolean isItemSaved = new ItemDaoImpl().save(
                         new Item(txtCode.getText(),
                         txtDescription.getText(), Double.parseDouble(txtUnitPrice.getText()),
                         Integer.parseInt(txtQtyOnHand.getText())));
@@ -147,7 +148,7 @@ public class ItemFormController {
         } else {
             try {
 
-                boolean isItemUpdated = new DatabaseAccessCode().updateItem(
+                boolean isItemUpdated = new ItemDaoImpl().update(
                         new Item(txtCode.getText(),
                                 txtDescription.getText(), Double.parseDouble(txtUnitPrice.getText()),
                                 Integer.parseInt(txtQtyOnHand.getText())));

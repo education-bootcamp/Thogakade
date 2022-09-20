@@ -1,8 +1,6 @@
 package com.seekerscloud.pos.controller;
 
 import com.seekerscloud.pos.db.DBConnection;
-import com.seekerscloud.pos.db.Database;
-import com.seekerscloud.pos.modal.Order;
 import com.seekerscloud.pos.view.tm.OrderTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

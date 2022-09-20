@@ -2,6 +2,7 @@ package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
 
+import com.seekerscloud.pos.dao.custom.impl.CustomerDaoImpl;
 import com.seekerscloud.pos.entity.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTm;
 import javafx.collections.FXCollections;
@@ -73,7 +74,7 @@ public class CustomerFormController {
 
             ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
-           ArrayList<Customer> customerList= new DatabaseAccessCode().searchCustomers(searchText);
+           ArrayList<Customer> customerList= new CustomerDaoImpl().searchCustomers(searchText);
 
             for (Customer c: customerList){
                     Button btn = new Button("Delete");
@@ -91,7 +92,7 @@ public class CustomerFormController {
                         Optional<ButtonType> buttonType = alert.showAndWait();
                         if (buttonType.get() == ButtonType.YES) {
                             try {
-                                if (new DatabaseAccessCode().deleteCustomer(tm.getId())) {
+                                if (new CustomerDaoImpl().delete(tm.getId())) {
                                     searchCustomers(searchText);
                                     new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
                                 } else {
@@ -117,7 +118,7 @@ public class CustomerFormController {
 
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
             try {
-                boolean isCustomerSaved = new DatabaseAccessCode().saveCustomer(
+                boolean isCustomerSaved = new CustomerDaoImpl().save(
                         new Customer(
                                 txtId.getText(),
                                 txtName.getText(), txtAddress.getText(),
@@ -140,7 +141,7 @@ public class CustomerFormController {
 
             try {
 
-                boolean isCustomerUpdated = new DatabaseAccessCode().updateCustomer(
+                boolean isCustomerUpdated = new CustomerDaoImpl().update(
                         new Customer(
                                 txtId.getText(),
                                 txtName.getText(), txtAddress.getText(),
