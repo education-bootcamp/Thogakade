@@ -1,4 +1,5 @@
-package com.seekerscloud.pos.modal;
+package com.seekerscloud.pos.entity;
+
 public class Item {
     private String code;
     private String description;

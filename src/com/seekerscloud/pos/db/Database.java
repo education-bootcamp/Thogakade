@@ -1,7 +1,5 @@
 package com.seekerscloud.pos.db;
 
-import com.seekerscloud.pos.modal.Customer;
-import com.seekerscloud.pos.modal.Item;
 import com.seekerscloud.pos.modal.Order;
 
 import java.util.ArrayList;
