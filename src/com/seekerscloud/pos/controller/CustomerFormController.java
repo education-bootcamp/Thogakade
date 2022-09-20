@@ -2,6 +2,9 @@ package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
 
+import com.seekerscloud.pos.dao.DaoFactory;
+import com.seekerscloud.pos.dao.DaoTypes;
+import com.seekerscloud.pos.dao.custom.CustomerDao;
 import com.seekerscloud.pos.dao.custom.impl.CustomerDaoImpl;
 import com.seekerscloud.pos.entity.Customer;
 import com.seekerscloud.pos.view.tm.CustomerTm;
@@ -34,6 +37,8 @@ public class CustomerFormController {
     public JFXButton btnSaveCustomer;
     public AnchorPane customerFormContext;
     public TextField txtSearch;
+
+    private CustomerDao customerDao= DaoFactory.getInstance().getDao(DaoTypes.CUSTOMER);
 
     private String searchText="";
 
@@ -74,7 +79,7 @@ public class CustomerFormController {
 
             ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
-           ArrayList<Customer> customerList= new CustomerDaoImpl().searchCustomers(searchText);
+           ArrayList<Customer> customerList= customerDao.searchCustomers(searchText);
 
             for (Customer c: customerList){
                     Button btn = new Button("Delete");
@@ -92,7 +97,7 @@ public class CustomerFormController {
                         Optional<ButtonType> buttonType = alert.showAndWait();
                         if (buttonType.get() == ButtonType.YES) {
                             try {
-                                if (new CustomerDaoImpl().delete(tm.getId())) {
+                                if (customerDao.delete(tm.getId())) {
                                     searchCustomers(searchText);
                                     new Alert(Alert.AlertType.INFORMATION, "Customer Deleted!").show();
                                 } else {
@@ -118,7 +123,7 @@ public class CustomerFormController {
 
         if (btnSaveCustomer.getText().equalsIgnoreCase("Save Customer")) {
             try {
-                boolean isCustomerSaved = new CustomerDaoImpl().save(
+                boolean isCustomerSaved = customerDao.save(
                         new Customer(
                                 txtId.getText(),
                                 txtName.getText(), txtAddress.getText(),
@@ -141,7 +146,7 @@ public class CustomerFormController {
 
             try {
 
-                boolean isCustomerUpdated = new CustomerDaoImpl().update(
+                boolean isCustomerUpdated = customerDao.update(
                         new Customer(
                                 txtId.getText(),
                                 txtName.getText(), txtAddress.getText(),

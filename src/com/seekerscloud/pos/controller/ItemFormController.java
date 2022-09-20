@@ -1,6 +1,9 @@
 package com.seekerscloud.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.seekerscloud.pos.dao.DaoFactory;
+import com.seekerscloud.pos.dao.DaoTypes;
+import com.seekerscloud.pos.dao.custom.ItemDao;
 import com.seekerscloud.pos.dao.custom.impl.ItemDaoImpl;
 import com.seekerscloud.pos.entity.Item;
 import com.seekerscloud.pos.view.tm.ItemTm;
@@ -33,6 +36,8 @@ public class ItemFormController {
     public TableColumn colUnitPrice;
     public TableColumn colQtyOnHand;
     public TableColumn colOption;
+
+    private ItemDao itemDao= DaoFactory.getInstance().getDao(DaoTypes.ITEM);
 
 
     private String searchText = "";
@@ -74,7 +79,7 @@ public class ItemFormController {
 
             ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
 
-            ArrayList<Item> itemList=new ItemDaoImpl().searchItems(searchText);
+            ArrayList<Item> itemList=itemDao.searchItems(searchText);
 
             for (Item i:itemList){
                 Button btn = new Button("Delete");
@@ -92,7 +97,7 @@ public class ItemFormController {
                     Optional<ButtonType> buttonType = alert.showAndWait();
                     if (buttonType.get() == ButtonType.YES) {
                         try {
-                            if (new ItemDaoImpl().delete(tm.getCode())) {
+                            if (itemDao.delete(tm.getCode())) {
                                 searchItems(searchText);
                                 new Alert(Alert.AlertType.INFORMATION, "Item Deleted!").show();
                             } else {
@@ -130,7 +135,7 @@ public class ItemFormController {
         if (btnSaveItem.getText().equalsIgnoreCase("Save Item")) {
             try {
 
-                boolean isItemSaved = new ItemDaoImpl().save(
+                boolean isItemSaved = itemDao.save(
                         new Item(txtCode.getText(),
                         txtDescription.getText(), Double.parseDouble(txtUnitPrice.getText()),
                         Integer.parseInt(txtQtyOnHand.getText())));
@@ -148,7 +153,7 @@ public class ItemFormController {
         } else {
             try {
 
-                boolean isItemUpdated = new ItemDaoImpl().update(
+                boolean isItemUpdated = itemDao.update(
                         new Item(txtCode.getText(),
                                 txtDescription.getText(), Double.parseDouble(txtUnitPrice.getText()),
                                 Integer.parseInt(txtQtyOnHand.getText())));
