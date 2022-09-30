@@ -1,9 +1,8 @@
 package com.seekerscloud.pos.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -21,6 +20,12 @@ public class Customer implements SuperEntity{
     private String address;
     @Column(name = "salary")
     private double salary;
+    //------------------------
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders= new ArrayList<>();
+
+    //------------------------
 
     public Customer() {
     }
@@ -30,6 +35,14 @@ public class Customer implements SuperEntity{
         this.name = name;
         this.address = address;
         this.salary = salary;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public String getId() {
