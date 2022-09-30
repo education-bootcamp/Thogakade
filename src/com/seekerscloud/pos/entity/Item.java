@@ -1,9 +1,24 @@
 package com.seekerscloud.pos.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "item")
 public class Item implements SuperEntity{
+    @Id
+    @Column(name = "code")
     private String code;
+    @Column(name = "description",
+            nullable = false)
     private String description;
+    @Column(name = "unit_price",
+            nullable = false)
     private double unitPrice;
+    @Column(name = "qty_on_hand",
+            nullable = false)
     private int qtyOnHand;
 
     public Item() {
