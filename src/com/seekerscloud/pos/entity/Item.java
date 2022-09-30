@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Table(name = "item")
 public class Item implements SuperEntity{
     @Id
-    @Column(name = "code")
+    @Column(name = "item_code")
     private String code;
     @Column(name = "description",
             nullable = false)

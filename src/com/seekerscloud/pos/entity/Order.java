@@ -1,11 +1,15 @@
 package com.seekerscloud.pos.entity;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "orders")
 public class Order {
+    @Id
+    @Column(name = "order_code")
     private String orderId;
     private String date;
+    @Column(name = "total_cost")
     private double totalCost;
 
     @ManyToOne
