@@ -1,6 +1,8 @@
 package com.seekerscloud.pos.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -11,12 +13,19 @@ public class Order {
     private String date;
     @Column(name = "total_cost")
     private double totalCost;
-
+    //--------------------------
     @ManyToOne
     @JoinColumn(
             name = "customer_id"
     )
     private Customer customer;
+
+    @OneToMany(mappedBy = "order", cascade = {
+            CascadeType.ALL
+    })
+    private List<OrderDetails> details= new ArrayList<>();
+
+    //---------------------------
 
     public Order() {
     }
@@ -25,6 +34,14 @@ public class Order {
         this.orderId = orderId;
         this.date = date;
         this.totalCost = totalCost;
+    }
+
+    public List<OrderDetails> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<OrderDetails> details) {
+        this.details = details;
     }
 
     public Customer getCustomer() {

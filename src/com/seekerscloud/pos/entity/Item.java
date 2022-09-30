@@ -1,9 +1,8 @@
 package com.seekerscloud.pos.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "item")
@@ -20,6 +19,14 @@ public class Item implements SuperEntity{
     @Column(name = "qty_on_hand",
             nullable = false)
     private int qtyOnHand;
+
+    //------------------------
+    @OneToMany(mappedBy = "item", cascade = {
+            CascadeType.ALL
+    })
+    private List<OrderDetails> details= new ArrayList<>();
+    //------------------------
+
 
     public Item() {
     }
